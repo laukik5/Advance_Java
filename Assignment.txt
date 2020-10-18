@@ -1,0 +1,664 @@
+								JDBC
+
+01. Create a program to create table named student having columns [ rno, name, marks, date of birth].
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class CreateStudent {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("create table Student(rollno int,name varchar(15),marks int,dob date)");
+			s.execute();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+02. Create a program to insert record in the student table.
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class InsertStudent {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter RollNo. : " );
+		int rollno = scan.nextInt();
+		System.out.println("Enter Name : " );
+		String Sname = scan.next();
+		System.out.println("Enter Marks : " );
+		int marks = scan.nextInt();
+		System.out.println("Enter DateOfBirth (YYYY-MM-DD) : " );
+		String dob = scan.next();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("insert into Student values(?,?,?,?)");
+			s.setInt(1, rollno);
+			s.setString(2, Sname);
+			s.setInt(3, marks);
+			s.setString(4, dob);
+			
+			s.execute();
+			System.out.println("Record Inserted....");
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+
+03. Create a program to select all of the student records.
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class SelectStudent {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		Scanner scan = new Scanner(System.in);
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("Select * from Student ");
+			
+			ResultSet select = s.executeQuery();
+			System.out.println("Records....");
+			while(select.next()) {
+				System.out.println("RollNo. : "+select.getInt(1)+"\nName : "+select.getString(2)+"\nMarks : "+select.getInt(3)+"\nDate of Birth : "+select.getString(4));
+			}
+			
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+
+04. Create a program to display the student records in sorted order of marks [ highest to lowest ].
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Question_4 {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		Scanner scan = new Scanner(System.in);
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("Select * from Student ORDER BY rollno DESC");
+			
+			ResultSet select = s.executeQuery();
+			System.out.println("Records....");
+			while(select.next()) {
+				System.out.println("\nRollNo. : "+select.getInt(1)+"\nName : "+select.getString(2)+"\nMarks : "+select.getInt(3)+"\nDate of Birth : "+select.getString(4));
+			}
+			
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+
+
+05. Create a program to display no. of student records present in the table.
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Question_5 {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		Scanner scan = new Scanner(System.in);
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("Select COUNT(*) from Student");
+			ResultSet rs = s.executeQuery();
+			rs.next();
+			int i = rs.getInt(1);
+			System.out.println("Student Records = "+i);
+			
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+
+
+06. Create a program to perform CRUD operations for student [ rno, name, marks, date of birth ] using Statement. Take values from keyboard.
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class CreateStudent {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		/*		C	:	Create Record
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			Statement s = connection.createStatement();
+			
+			s.execute("create table Student(rollno int,name varchar(15),marks int,dob date)");
+			System.out.println("Record Created....");
+		
+		} 
+		
+		
+		//		U	:	Update Record
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Enter RollNo. : " );
+			int rollno = scan.nextInt();
+			System.out.println("Enter Name : " );
+			String Sname = scan.next();
+			System.out.println("Enter Marks : " );
+			int marks = scan.nextInt();
+			System.out.println("Enter DateOfBirth (YYYY-MM-DD) : " );
+			String dob = scan.next();
+			
+			Statement s = connection.createStatement();
+			
+			s.execute("insert into Student values(rollno "+rollno+",name "+Sname+",marks "+marks+",dob "+dob+")");
+			System.out.println("Record Inserted....");
+			
+		}
+		
+		//		R	:	Read Record 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Enter RollNo. : " );
+			int rollno = scan.nextInt();
+			System.out.println("Update Marks : " );
+			int marks = scan.nextInt();
+			
+			
+			Statement s = connection.createStatement();
+			
+			s.execute("update Student set marks = "+marks+"where rollno = "+rollno+")");
+			System.out.println("Record Updated....");
+		
+		}*/
+	
+		//		D	:	Delete Record 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Enter RollNo. to delete : " );
+			int rollno = scan.nextInt();
+			
+			Statement s = connection.createStatement();
+			
+			s.execute("delete from Student where rollno = "+rollno);
+			System.out.println("Record Deleted....");
+		
+		}catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+07. Create a program to search student record on the basis of given roll no.
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Question_7 {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter RollNo. : ");
+		int rollno = scan.nextInt();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("Select * from Student where rollno = ?");
+			s.setInt(1, rollno);
+			ResultSet select = s.executeQuery();
+			select.next();
+			System.out.println("RollNo. : "+select.getInt(1)+"\nName : "+select.getString(2)+"\nMarks : "+select.getInt(3)+"\nDate of Birth : "+select.getString(4));
+
+			
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+
+
+08. Create a program to display average marks obtained by the student.
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Question_8 {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		
+		Scanner scan = new Scanner(System.in);
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("Select sum(marks)/count(*) from Student");
+			
+			ResultSet rs = s.executeQuery();
+			rs.next();
+			int i = rs.getInt(1);
+			System.out.println("Average Makrs of Students = "+i);
+			
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				scan.close();
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+
+09. Create a program to perform CRUD operation for student [ rno,name,marks,date of birth ] using PreparedStatement. Take values from keyboard.
+->
+CURD Operation using PrepareStatement
+
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class CreateStudent {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		
+		//		C	:	Create Record
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("create table Student(rollno int,name varchar(15),marks int,dob date)");
+			s.execute();
+			
+		} 
+		
+		
+		//		U	:	Update Record
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter RollNo. : " );
+		int rollno = scan.nextInt();
+		System.out.println("Enter Name : " );
+		String Sname = scan.next();
+		System.out.println("Enter Marks : " );
+		int marks = scan.nextInt();
+		System.out.println("Enter DateOfBirth (YYYY-MM-DD) : " );
+		String dob = scan.next();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("insert into Student values(?,?,?,?)");
+			s.setInt(1, rollno);
+			s.setString(2, Sname);
+			s.setInt(3, marks);
+			s.setString(4, dob);
+			
+			s.execute();
+			System.out.println("Record Inserted....");
+			
+		}
+		
+		
+		//		R	:	Read Record
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("Select * from Student ");
+			
+			ResultSet select = s.executeQuery();
+			System.out.println("Records....");
+			while(select.next()) {
+				System.out.println("\nRollNo. : "+select.getInt(1)+"\nName : "+select.getString(2)+"\nMarks : "+select.getInt(3)+"\nDate of Birth : "+select.getString(4));
+			}
+			
+			
+		}
+		
+		
+		//		D	:	Delete Record
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			Scanner scan = Scanner(System.in);
+			int rollno = scan.nextInt();
+			
+			PreparedStatement s = connection.prepareStatement("delete from Student where rollno = ? ");
+			s.setInt(1,rollno);
+			s.executeUpdate();
+			System.out.println("Record Deleted....");
+			
+			
+		}catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+10. Make a program that displays number of columns present in the given table.
+->
+package Assignment;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Question_10 {
+
+	public static void main(String[] args) {
+		String url="jdbc:mysql://127.0.0.1:3306/JDBCAssignment";
+		String name="root";
+		String password="root";
+		Connection connection = null;
+		Scanner scan = new Scanner(System.in);
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url,name,password);
+			
+			PreparedStatement s = connection.prepareStatement("select * from Student");
+			
+			  ResultSetMetaData rsMetaData = s.getMetaData();
+		      //Moving the cursor to the last row
+		      System.out.println("Table contains "+rsMetaData.getColumnCount()+" columns");
+		   
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+}
+
+
+
+
+
